@@ -1,0 +1,7 @@
+state-action space will be large if have large number starting bricks:
+
+1. Limit the possible actions significantly: 
+   If start with N bricks, instead of allowing to list 0<=Nlist<=N bricks,
+   limit to selling only {0,1,2,...,K} bricks for a small K (e.g. 5).
+2. Or use small number of unifromly spaced allowed list sizes, e.g. 0,5,10,15, etc.
+3. Or just limit to small number of starting bricks [e.g. 5-10] but allow any number of bricks to be listed.
