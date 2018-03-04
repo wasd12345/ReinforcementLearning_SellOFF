@@ -30,11 +30,36 @@ The market price at time t is P_t. But you can sell at market price, or a little
 If you have remaining bricks at final time T, there is large penalty fine FT.
 
 
+
+
+# =============================================================================
+# STATE VECTOR
+# =============================================================================
+For now let's say the state vector is pretty simple. It's a tuple of:
+(Time remaining; N bricks remaining; last K price[t-K : t])
+
+
+# =============================================================================
+# ACTIONS
+# =============================================================================
+Some combinatorial assignment of 0 to N blocks to list,
+each listed block on one of the P price levels
+
+
+# =============================================================================
+# REWARDS
+# =============================================================================
+At a given timestep, the reward for leaving that time step after takign action a,
+R(s,a), is the stochastic reward which is whatever combined profit is made from
+all the sales at that time step.
+THe final reward / penalty is a large negative penalty if at 
+
 """
 
 
 import numpy as np
 import matplotlib.pyplot as plt
+from itertools import combinations_with_replacement, combinations
 
 
 # =============================================================================
@@ -45,7 +70,7 @@ Nbricks = 20 #Number starting bricks.
 delta = 1. #Up and down offset of price. Allowed to sell at {P_t - delta, P_t, P_t + delta}
 
 Nepisodes = 10000
-#...
+FINAL_REMAINING_PENALTY = -99999999.
 
 
 
@@ -99,20 +124,37 @@ def SaleProbability(P_t):
 
 
 
-def GetPossibleActions(state):
+def GetPossibleActions(state,prices):
     """
     Given the state vector,
     return the potential actions.
     
     
     input:
-        state - np array. State vector
-        
+        state - tuple. State vector, format described in intro.
+        prices - list. The unique prices at which we can listduring this time step.
     return:
-        actions = list of available actions
+        actions = list. List of available actions. Each action is a tuple of 
         
     """
-    pass
+    
+    #The agent can list some bricks for sale.
+    #For now, let's say it can list [0,1,2,...,K] bricks 
+    K = 3
+    #With K=3, and 3 price levels, there are up to 20 actions:
+    #(number ways to arrange up to 3 balls in 3 unique bins):
+    #N0 + N1 + N2 + N3 ways
+    #N0 = 1 since 1 way to list 0 total bricks,
+    #N1 = 3 sicne 3 ways to list 1 total brick,
+    #N2 = 3 + 3 = 6, since can put 2 on single price, or 1 each on 2 prices,
+    #N3 = 3 + 6 + 1 = 10
+
+
+    #Get number of bricks remaining in our pile:
+    N = state[1]
+    #So in total can only list up to N: clip at N
+
+    
     
     
     
